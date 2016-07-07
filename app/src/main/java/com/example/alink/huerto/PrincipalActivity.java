@@ -95,7 +95,8 @@ public class PrincipalActivity extends AppCompatActivity
         } else if (id == R.id.nav_basico) {
 
         } else if (id == R.id.nav_lista) {
-
+            Intent intent = new Intent(this, ListaDePlantasActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_crear) {
             Intent intent = new Intent(this, CrearCultivoActivity.class);
             startActivity(intent);
