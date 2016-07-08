@@ -2,8 +2,7 @@ package com.example.alink.huerto;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -18,45 +17,41 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class ListaDePlantasActivity extends AppCompatActivity {
-    //LINEAR LAYOUT MANAGER
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-
+public class DetallePlantaActivity extends AppCompatActivity {
+    TextView texto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lista_de_plantas);
+        setContentView(R.layout.activity_detalle_planta);
+
+        texto = (TextView)findViewById(R.id.texto);
+        String id = getIntent().getStringExtra("idPlanta");
+        texto.setText(id);
+
+        //CAMPOS VISTA
+
+        TextView tid = (TextView)findViewById(R.id.detId);
+        TextView tnom = (TextView)findViewById(R.id.detNombre);
+        TextView tnomC = (TextView)findViewById(R.id.detNomCient);
+        TextView tclase = (TextView)findViewById(R.id.detClase);
 
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+
+
+
 
         RequestParams obj = new RequestParams();
         obj.put("c", "Planta");
-        obj.put("a", "getallplantas");
+        obj.put("a", "getplanta");
+        obj.put("id", id+"");
 
         // Inicializar Animes
         tarea(obj);
+    }
 
-        /*//Crear nuevo adaptador
-        mAdapter = new ReciclerViewAdapter(items);
-        mRecyclerView.setAdapter(mAdapter);*/
-
-
-    }//FIN ON CREATE
-
-   public void tarea(RequestParams params){
+    public void tarea(RequestParams params){
         AsyncHttpClient client = new AsyncHttpClient();
-        final List items = new ArrayList();
-
         client.get("http://colvin.chillan.ubiobio.cl:8070/nionate/webservice/?", params,new JsonHttpResponseHandler(){
 
             @Override
@@ -67,10 +62,9 @@ public class ListaDePlantasActivity extends AppCompatActivity {
                         JSONArray arreglo = response.getJSONArray("plantas");
                         JSONObject planta;
 
-                        for (int i=0; i<arreglo.length();i++){
                             Planta plantita = new Planta();
 
-                            JSONObject aux = arreglo.getJSONObject(i);
+                            JSONObject aux = arreglo.getJSONObject(0);
                             planta = aux.getJSONObject("planta");
 
                             plantita.setIdPlanta(planta.getString("idPlanta"));
@@ -87,11 +81,6 @@ public class ListaDePlantasActivity extends AppCompatActivity {
                             plantita.setTipoSuelo(planta.getString("tipoSuelo"));
                             plantita.setnTemperatura(planta.getString("nTemperatura"));
 
-                            items.add(plantita);
-                        }
-                        //Crear nuevo adaptador
-                        mAdapter = new ReciclerViewAdapter(items);
-                        mRecyclerView.setAdapter(mAdapter);
 
                     }catch(JSONException e){
 
@@ -104,6 +93,6 @@ public class ListaDePlantasActivity extends AppCompatActivity {
                 super.onFailure(statusCode, headers, responseString, throwable);
             }
         });
-       //return items;
-   }//FIN TAREA
+        //return items;
+    }//FIN TAREA
 }
