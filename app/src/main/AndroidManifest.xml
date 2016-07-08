@@ -55,6 +55,9 @@
         </activity>
         <activity android:name=".PerfilActivity"></activity>
         <activity android:name=".ListaDePlantasActivity"></activity>
+
+        <activity android:name=".DetallePlantaActivity"></activity>
+
     </application>
 
 </manifest>
