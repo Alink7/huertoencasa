@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import java.net.IDN;
 import java.util.HashMap;
 
 /**
@@ -24,11 +25,12 @@ public class SessionManager {
         editor = preferences.edit();
     }
 
-    public void crearSesion(String name, String email){
+    public void crearSesion(String name, String email, int idUsuario){
 
         editor.putBoolean(Constantes.IS_LOGIN, true);
         editor.putString(Constantes.NAME_KEY, name);
         editor.putString(Constantes.EMAIL_KEY, email);
+        editor.putInt(Constantes.IDUSUARIO, idUsuario);
 
         editor.commit();
     }
@@ -39,6 +41,7 @@ public class SessionManager {
 
         usuario.put(Constantes.NAME_KEY, preferences.getString(Constantes.NAME_KEY, null));
         usuario.put(Constantes.EMAIL_KEY, preferences.getString(Constantes.EMAIL_KEY, null));
+        usuario.put(Constantes.IDUSUARIO, String.valueOf(preferences.getInt(Constantes.IDUSUARIO, -1)));
 
         return usuario;
     }
@@ -75,7 +78,7 @@ public class SessionManager {
         context.startActivity(i);
     }
 
-    private boolean estaLogueado(){
+    public boolean estaLogueado(){
         return preferences.getBoolean(Constantes.IS_LOGIN, false);
     }
 }
