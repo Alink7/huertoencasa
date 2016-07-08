@@ -11,4 +11,5 @@ public class Constantes {
     public static final String NAME_KEY = "USERNAME";
     public static final String EMAIL_KEY = "EMAIL";
     public static final String IS_LOGIN = "ISLOGGEDIN";
+    public static final String IDUSUARIO = "IDUSUARIO";
 }

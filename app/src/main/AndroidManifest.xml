@@ -52,7 +52,9 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.alink.huerto.PrincipalActivity" />
-    </activity>
+        </activity>
+        <activity android:name=".PerfilActivity"></activity>
+        <activity android:name=".ListaDePlantasActivity"></activity>
     </application>
 
 </manifest>

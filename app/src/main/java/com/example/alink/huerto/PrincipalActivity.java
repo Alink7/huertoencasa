@@ -1,9 +1,13 @@
 package com.example.alink.huerto;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,10 +17,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import bd.BdSqliteHelper;
 
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private List<Cultivo> cultivos;
+    private TextView instruccion;
+    private ImageButton nuevoCultivo;
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +62,44 @@ public class PrincipalActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        instruccion = (TextView) findViewById(R.id.txt_crear_cultivo);
+        nuevoCultivo = (ImageButton)findViewById(R.id.btn_crear_cultivo);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_cultivo);
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // Inicializar
+        cultivos = new ArrayList<>();
+
+        traerCultivos();
+
+        //Si no hay cultivos se muestra la instruccion mas el boton
+        if(cultivos.size()==0){
+            instruccion.setVisibility(View.VISIBLE);
+            nuevoCultivo.setVisibility(View.VISIBLE);
+        }else {
+            //si hay cultivos se muestra la lista
+            mAdapter = new RecyclerViewAdapterCultivos(cultivos);
+            mRecyclerView.setAdapter(mAdapter);
+        }
+
+    }
+
+    private void traerCultivos(){
+        BdSqliteHelper bdplantas = new BdSqliteHelper(this, "DBPLANTAS", null, 1);
+        SQLiteDatabase bd = bdplantas.getReadableDatabase();
+        Cursor cursor = bd.rawQuery("SELECT * FROM Cultivo", null);
+        if (cursor.moveToFirst()) {
+            do {
+                cultivos.add(new Cultivo(cursor.getDouble(1), cursor.getDouble(2), cursor.getDouble(3), cursor.getString(4)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
     }
     
     public void agregarCultivo(View view){

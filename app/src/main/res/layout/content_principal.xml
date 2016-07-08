@@ -19,6 +19,7 @@
         android:text="Crear Cultivo"
         android:textSize="40sp"
         android:textAlignment="center"
+        android:visibility="gone"
         />
 
     <ImageButton
@@ -29,6 +30,17 @@
         android:layout_below="@id/txt_crear_cultivo"
         android:background="@drawable/ic_add"
         android:onClick="agregarCultivo"
+        android:visibility="gone"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/recycler_cultivo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="3dp"
+        android:scrollbars="vertical"
+        android:layout_below="@+id/btn_crear_cultivo"
         />
 
 </RelativeLayout>

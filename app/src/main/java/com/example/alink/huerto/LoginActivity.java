@@ -40,6 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -81,36 +82,49 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.emailTxt);
-        populateAutoComplete();
-
-        mPasswordView = (EditText) findViewById(R.id.passwordTxt);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-
         sManager = new SessionManager(getApplicationContext());
+
+        System.out.println("ESTA LOGUEADO: "+ sManager.estaLogueado());
+        if(!sManager.estaLogueado()) {
+            setContentView(R.layout.activity_login);
+
+            // Set up the login form.
+            mEmailView = (AutoCompleteTextView) findViewById(R.id.emailTxt);
+            populateAutoComplete();
+
+            mPasswordView = (EditText) findViewById(R.id.passwordTxt);
+            mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                    if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                        attemptLogin();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
+            Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+            mEmailSignInButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    attemptLogin();
+                }
+            });
+
+            mLoginFormView = findViewById(R.id.login_form);
+            mProgressView = findViewById(R.id.login_progress);
+        }else {
+            setContentView(R.layout.activity_perfil);
+            HashMap<String, String> usuario = sManager.detallesUsuario();
+            TextView usuario_nombre = (TextView)findViewById(R.id.perfil_usuario_nombre);
+            usuario_nombre.setText(usuario.get(Constantes.NAME_KEY));
+        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void cerrarSesion(View v){
+        sManager.cerrarSesion();
     }
 
     private void populateAutoComplete() {
@@ -240,7 +254,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     showProgress(false);
                     try {
                         JSONObject ob = response.getJSONObject("usuario");
-                        usuarioRetornado = new Usuario(ob.getString("nombre"), ob.getString("correo"), ob.getString("password"));
+                        usuarioRetornado = new Usuario(ob.getString("nombre"), ob.getString("correo"), ob.getString("password"), ob.getInt("idUsuario"));
 
 
                         /** si existe el usuario con ese nombre, recuperar los datos desde el servidor y comparar los password **/
@@ -249,7 +263,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             if(email.equals(usuarioRetornado.getEmail()) && password.equals(usuarioRetornado.getPassword())){
                                 /** si ambos password son iguales crear la sesion para el usuario sino mandar error **/
 
-                                sManager.crearSesion(usuarioRetornado.getUsername(), usuarioRetornado.getEmail());
+                                sManager.crearSesion(usuarioRetornado.getUsername(), usuarioRetornado.getEmail(), usuarioRetornado.getIdUsuario());
 
                                 Intent i = new Intent(getApplicationContext(), WelcomeActivity.class);
                                 i.putExtra(Constantes.NAME_KEY, usuarioRetornado.getUsername());
