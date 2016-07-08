@@ -53,11 +53,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.alink.huerto.PrincipalActivity" />
         </activity>
-        <activity android:name=".PerfilActivity"></activity>
-        <activity android:name=".ListaDePlantasActivity"></activity>
-
-        <activity android:name=".DetallePlantaActivity"></activity>
-
+        <activity android:name=".PerfilActivity" />
+        <activity android:name=".ListaDePlantasActivity" />
+        <activity android:name=".DetallePlantaActivity" />
+        <activity android:name=".AgregarACultivoActivity"></activity>
     </application>
 
 </manifest>

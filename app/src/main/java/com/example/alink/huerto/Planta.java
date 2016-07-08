@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by Luis on 07-07-2016.
  */
-public class Planta{
+public class Planta {
     String idPlanta;
     String nombre;
     String nombreCientifico;
