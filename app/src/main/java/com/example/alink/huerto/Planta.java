@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by Luis on 07-07-2016.
  */
-public class Planta {
+public class Planta implements Parcelable {
     String idPlanta;
     String nombre;
     String nombreCientifico;
@@ -38,6 +38,39 @@ public class Planta {
         this.tipoSuelo = tipoSuelo;
         this.nTemperatura = nTemperatura;
     }*/
+
+
+    public Planta(){
+
+    }
+
+    protected Planta(Parcel in) {
+        idPlanta = in.readString();
+        nombre = in.readString();
+        nombreCientifico = in.readString();
+        clase = in.readString();
+        distanciaPlantas = in.readDouble();
+        distanciaOtrasPlantas = in.readDouble();
+        profundidadNecesaria = in.readDouble();
+        volumenNecesario = in.readDouble();
+        nAbono = in.readString();
+        nRiego = in.readString();
+        nSol = in.readString();
+        tipoSuelo = in.readString();
+        nTemperatura = in.readString();
+    }
+
+    public static final Parcelable.Creator<Planta> CREATOR = new Parcelable.Creator<Planta>() {
+        @Override
+        public Planta createFromParcel(Parcel in) {
+            return new Planta(in);
+        }
+
+        @Override
+        public Planta[] newArray(int size) {
+            return new Planta[size];
+        }
+    };
 
 
     public String getIdPlanta() {
@@ -142,5 +175,27 @@ public class Planta {
 
     public void setnTemperatura(String nTemperatura) {
         this.nTemperatura = nTemperatura;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.idPlanta);
+        dest.writeString(this.nombre);
+        dest.writeString(this.nombreCientifico);
+        dest.writeString(this.clase);
+        dest.writeDouble(this.distanciaPlantas);
+        dest.writeDouble(this.distanciaOtrasPlantas);
+        dest.writeDouble(this.profundidadNecesaria);
+        dest.writeDouble(this.volumenNecesario);
+        dest.writeString(this.nAbono);
+        dest.writeString(this.nRiego);
+        dest.writeString(this.nSol);
+        dest.writeString(this.tipoSuelo);
+        dest.writeString(this.nTemperatura);
     }
 }

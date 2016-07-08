@@ -35,7 +35,7 @@ public class PrincipalActivity extends AppCompatActivity
     private ImageButton nuevoCultivo;
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerViewAdapterCultivos mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
@@ -85,6 +85,12 @@ public class PrincipalActivity extends AppCompatActivity
         }else {
             //si hay cultivos se muestra la lista
             mAdapter = new RecyclerViewAdapterCultivos(cultivos);
+            mAdapter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(PrincipalActivity.this, "Ha pulsado el huerto " + mRecyclerView.getChildPosition(v), Toast.LENGTH_SHORT).show();
+                }
+            });
             mRecyclerView.setAdapter(mAdapter);
         }
 

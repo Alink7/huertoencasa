@@ -1,5 +1,6 @@
 package com.example.alink.huerto;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,12 +24,16 @@ public class ListaDePlantasActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_de_plantas);
 
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Recuperando información...");
+        dialog.setCancelable(false);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -54,6 +59,7 @@ public class ListaDePlantasActivity extends AppCompatActivity {
     }//FIN ON CREATE
 
    public void tarea(RequestParams params){
+        dialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
         final List items = new ArrayList();
 
@@ -63,6 +69,7 @@ public class ListaDePlantasActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 if(statusCode == 200){
+                    dialog.dismiss();
                     try {
                         JSONArray arreglo = response.getJSONArray("plantas");
                         JSONObject planta;

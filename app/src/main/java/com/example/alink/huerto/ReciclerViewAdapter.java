@@ -16,7 +16,7 @@ import java.util.List;
  * Created by Luis on 07-07-2016.
  */
 public class ReciclerViewAdapter extends RecyclerView.Adapter<ReciclerViewAdapter.PlantaViewHolder> {
-        private List<Planta> items;
+        private static List<Planta> items;
 
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
@@ -44,7 +44,7 @@ public class ReciclerViewAdapter extends RecyclerView.Adapter<ReciclerViewAdapte
 
             @Override
             public void onClick(View v) {
-                if (v instanceof ImageView){
+                /*if (v instanceof ImageView){
                     //mListener.onTomato((ImageView)v);
                     Intent intent = new Intent(v.getContext(), DetallePlantaActivity.class);
                     intent.putExtra("idPlanta", idPlanta);
@@ -53,7 +53,12 @@ public class ReciclerViewAdapter extends RecyclerView.Adapter<ReciclerViewAdapte
 
                 } else {
                     //mListener.onPotato(v);
-                }
+                }*/
+
+                Planta planta = items.get(position);
+                Intent i = new Intent(v.getContext(), DetallePlantaActivity.class);
+                i.putExtra("planta", planta);
+                v.getContext().startActivity(i);
             }
 
             public static interface IMyViewHolderClicks {

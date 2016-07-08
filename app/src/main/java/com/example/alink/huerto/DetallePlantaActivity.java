@@ -39,7 +39,16 @@ public class DetallePlantaActivity extends AppCompatActivity {
         TextView tclase = (TextView)findViewById(R.id.detClase);
 
 
+        Bundle b = getIntent().getExtras();
+        Planta planta = (Planta)b.get("planta");
 
+        if(planta != null){
+            System.out.println(planta.getNombre());
+            System.out.println(planta.getNombreCientifico());
+            System.out.println(planta.getDistanciaOtrasPlantas());
+            System.out.println(planta.getDistanciaPlantas());
+            System.out.println(planta.getClase());
+        }
 
 
 

@@ -11,8 +11,19 @@ import java.util.List;
 /**
  * Created by Nicolas on 08-07-2016.
  */
-public class RecyclerViewAdapterCultivos extends RecyclerView.Adapter<RecyclerViewAdapterCultivos.CultivoViewHolder> {
+public class RecyclerViewAdapterCultivos extends RecyclerView.Adapter<RecyclerViewAdapterCultivos.CultivoViewHolder> implements View.OnClickListener {
     private List<Cultivo> items;
+    private View.OnClickListener listener;
+
+    public void setOnClickListener(View.OnClickListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (listener != null)
+            listener.onClick(v);
+    }
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -41,6 +52,8 @@ public class RecyclerViewAdapterCultivos extends RecyclerView.Adapter<RecyclerVi
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cultivo_card, parent, false);
+
+        v.setOnClickListener(this);
 
         CultivoViewHolder vh = new CultivoViewHolder(v);
         return vh;
