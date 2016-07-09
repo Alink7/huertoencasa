@@ -16,6 +16,22 @@
         android:text="Medium Text"
         android:id="@+id/tAgregarCultivo"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp" />
+        android:layout_centerHorizontal="true" />
+
+
+    <Spinner
+        android:layout_marginTop="10px"
+        android:id="@+id/cultivo_tipo_suelo"
+        android:layout_below="@id/tAgregarCultivo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Asignar"
+        android:id="@+id/botonAsignacion"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/tAgregarCultivo"
+        android:layout_alignStart="@+id/tAgregarCultivo" />
 </RelativeLayout>
