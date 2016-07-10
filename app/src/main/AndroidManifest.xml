@@ -54,31 +54,9 @@
                 android:value="com.example.alink.huerto.PrincipalActivity" />
         </activity>
         <activity android:name=".PerfilActivity" />
-
-        <activity
-            android:name=".ListaDePlantasActivity"
-            android:label="Lista de Plantas">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.alink.huerto.PrincipalActivity" />
-        </activity>
-
-        <activity
-            android:name=".DetallePlantaActivity"
-            android:label="Detalle de la Planta">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.alink.huerto.ListaDePlantasActivity" />
-        </activity>
-
-        <activity
-            android:name=".AgregarACultivoActivity"
-            android:label="Asignación de la planta al cultivo">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.alink.huerto.ListaDePlantasActivity" />
-        </activity>
-
+        <activity android:name=".ListaDePlantasActivity" />
+        <activity android:name=".DetallePlantaActivity" />
+        <activity android:name=".AgregarACultivoActivity"></activity>
     </application>
 
 </manifest>
