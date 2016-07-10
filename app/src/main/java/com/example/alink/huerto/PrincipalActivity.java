@@ -157,7 +157,8 @@ public class PrincipalActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.nav_basico) {
-
+            Intent intent = new Intent(this, AprenderActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_lista) {
             Intent intent = new Intent(this, ListaDePlantasActivity.class);
             startActivity(intent);
