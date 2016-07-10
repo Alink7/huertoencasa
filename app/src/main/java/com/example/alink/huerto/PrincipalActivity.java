@@ -1,11 +1,15 @@
 package com.example.alink.huerto;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,7 +21,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +40,7 @@ public class PrincipalActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;
     private RecyclerViewAdapterCultivos mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private static SessionManager sManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class PrincipalActivity extends AppCompatActivity
         setContentView(R.layout.activity_principal);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        sManager = new SessionManager(getApplicationContext());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -88,12 +93,17 @@ public class PrincipalActivity extends AppCompatActivity
             mAdapter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(PrincipalActivity.this, "Ha pulsado el huerto " + mRecyclerView.getChildPosition(v), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(v.getContext(), OpcionesCultivoActivity.class);
+                    intent.putExtra("cultivo", cultivos.get(mRecyclerView.getChildAdapterPosition(v)));
+                    //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    v.getContext().startActivity(intent);
+
+                    Toast.makeText(PrincipalActivity.this, "Ha pulsado el huerto " + cultivos.get(mRecyclerView.getChildAdapterPosition(v)).getIdCultivo(), Toast.LENGTH_SHORT).show();
                 }
             });
             mRecyclerView.setAdapter(mAdapter);
         }
-
     }
 
     private void traerCultivos(){
@@ -102,7 +112,8 @@ public class PrincipalActivity extends AppCompatActivity
         Cursor cursor = bd.rawQuery("SELECT * FROM Cultivo", null);
         if (cursor.moveToFirst()) {
             do {
-                cultivos.add(new Cultivo(cursor.getDouble(1), cursor.getDouble(2), cursor.getDouble(3), cursor.getString(4)));
+                System.out.println("NOMBRE COLUMNA: " + cursor.getColumnName(0) + " VALOR COLUMNA: " + cursor.getInt(0));
+                cultivos.add(new Cultivo(cursor.getDouble(1), cursor.getDouble(2), cursor.getDouble(3), cursor.getString(4), cursor.getInt(0)));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -153,8 +164,13 @@ public class PrincipalActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_login) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+
+            if(!sManager.estaLogueado()) {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            }else{
+                new CerrarSesionDialog().show(getSupportFragmentManager(), "");
+            }
 
         } else if (id == R.id.nav_basico) {
             Intent intent = new Intent(this, AprenderActivity.class);
@@ -176,5 +192,21 @@ public class PrincipalActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public static class CerrarSesionDialog extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("La sesión está activa")
+                    .setPositiveButton("Cerrar Sesion", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            sManager.cerrarSesion();
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
     }
 }

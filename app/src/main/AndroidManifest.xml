@@ -53,10 +53,53 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.alink.huerto.PrincipalActivity" />
         </activity>
+        <activity
+            android:name=".AprenderActivity"
+            android:label="Temas Básicos"
+            android:parentActivityName=".PrincipalActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.alink.huerto.PrincipalActivity" />
+        </activity>
+        <activity
+            android:name=".DetalleAprenderConsejosActivity"
+            android:label="Consejos"
+            android:parentActivityName=".AprenderActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.alink.huerto.AprenderActivity" />
+        </activity>
+        <activity
+            android:name=".DetalleAprenderHerramientasActivity"
+            android:label="Herramientas"
+            android:parentActivityName=".AprenderActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.alink.huerto.AprenderActivity" />
+        </activity>
+        <activity
+            android:name=".DetalleAprenderTecnicasActivity"
+            android:label="Tecnicas"
+            android:parentActivityName=".AprenderActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.alink.huerto.AprenderActivity" />
+        </activity>
         <activity android:name=".PerfilActivity" />
         <activity android:name=".ListaDePlantasActivity" />
         <activity android:name=".DetallePlantaActivity" />
-        <activity android:name=".AgregarACultivoActivity"></activity>
+        <activity android:name=".AgregarACultivoActivity" />
+        <activity android:name=".DetalleCultivo" />
+        <activity
+            android:name=".OpcionesCultivoActivity"
+            android:label="Opciones de tu huerta"
+            android:parentActivityName=".PrincipalActivity"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.alink.huerto.PrincipalActivity"
+                />
+        </activity>
     </application>
 
 </manifest>

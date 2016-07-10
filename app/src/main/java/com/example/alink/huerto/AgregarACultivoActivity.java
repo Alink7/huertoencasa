@@ -1,15 +1,11 @@
 package com.example.alink.huerto;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -133,7 +129,7 @@ public class AgregarACultivoActivity extends AppCompatActivity {
         Cursor cursor = bd.rawQuery("SELECT * FROM Cultivo", null);
         if (cursor.moveToFirst()) {
             do {
-                cultivos.add(new Cultivo(cursor.getDouble(1), cursor.getDouble(2), cursor.getDouble(3), cursor.getString(4)));
+                cultivos.add(new Cultivo(cursor.getDouble(1), cursor.getDouble(2), cursor.getDouble(3), cursor.getString(4), cursor.getInt(0)));
             } while (cursor.moveToNext());
         }
         cursor.close();

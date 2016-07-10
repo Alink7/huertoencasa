@@ -265,7 +265,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                 sManager.crearSesion(usuarioRetornado.getUsername(), usuarioRetornado.getEmail(), usuarioRetornado.getIdUsuario());
 
-                                Intent i = new Intent(getApplicationContext(), WelcomeActivity.class);
+                                Intent i = new Intent(getApplicationContext(), PrincipalActivity.class);
                                 i.putExtra(Constantes.NAME_KEY, usuarioRetornado.getUsername());
                                 startActivity(i);
                             }
