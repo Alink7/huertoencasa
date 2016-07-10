@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,55 +14,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.alink.huerto.DetallePlantaActivity">
 
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/texto"
-        android:layout_alignParentTop="true"
+        android:id="@+id/tDatosPlanta"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/detId"
-        android:layout_below="@+id/texto"
-        android:layout_toRightOf="@+id/texto"
-        android:layout_toEndOf="@+id/texto" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/detNombre"
-        android:layout_below="@+id/detId"
-        android:layout_alignLeft="@+id/detId"
-        android:layout_alignStart="@+id/detId" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/detNomCient"
-        android:layout_below="@+id/detNombre"
-        android:layout_alignLeft="@+id/detNombre"
-        android:layout_alignStart="@+id/detNombre" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/detClase"
-        android:layout_below="@+id/detNomCient"
-        android:layout_alignLeft="@+id/detNomCient"
-        android:layout_alignStart="@+id/detNomCient" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="38dp"
+        android:layout_alignRight="@+id/botonAgregar"
+        android:layout_alignEnd="@+id/botonAgregar" />
 
     <Button
         android:layout_width="wrap_content"
@@ -67,16 +34,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_below = "@id/tDatosPlanta"
         android:layout_marginBottom="64dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tDatosPlanta"
-        android:layout_below="@+id/detClase"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="38dp"
-        android:layout_alignRight="@+id/botonAgregar"
-        android:layout_alignEnd="@+id/botonAgregar" />
 </RelativeLayout>
+</ScrollView>

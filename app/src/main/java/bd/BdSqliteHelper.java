@@ -15,7 +15,7 @@ public class BdSqliteHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
         tablas = new String[2];
         tablas[0] = "Create table Cultivo (idCultivo INTEGER PRIMARY KEY, largo FLOAT, ancho FLOAT, profundidad FLOAT, tipoSuelo TEXT)";
-        tablas[1] = "Create table CultivoContienePlantas (idCultivo INTEGER, idPlanta INTEGER, cantidad INTEGER, fecha TEXT)";
+        tablas[1] = "Create table CultivoContienePlantas (idCultivo INTEGER, idPlanta INTEGER, cantidad INTEGER, fecha TEXT, nombre TEXT)";
         dropTablas = new String[2];
         dropTablas[0] = "Drop table if exists Cultivo";
         dropTablas[1] = "Drop table if exists CultivoContienePlantas";

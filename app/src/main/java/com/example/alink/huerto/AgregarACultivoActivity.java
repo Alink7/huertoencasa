@@ -35,6 +35,7 @@ public class AgregarACultivoActivity extends AppCompatActivity {
     private Spinner ncultivo;
     Planta planta;
     private EditText inputCantidad;
+    int aEnviar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,27 +100,30 @@ public class AgregarACultivoActivity extends AppCompatActivity {
         //Float profundidad = Float.parseFloat(txt_cultivo_profundidad.getText().toString());
         int nCultivo = ncultivo.getSelectedItemPosition();
         nCultivo++; //porque el de arriba parte en 0
+        aEnviar = nCultivo;
         int cantidad = Integer.parseInt(inputCantidad.getText().toString());
         String fechaActual = obtenerFechaActual();
+        String prueba = planta.getNombre().toString();
 
-        Log.d("FECHAAAAAAAAAAAAAAAAAAAAAAAAA",fechaActual);
 
-        bd.execSQL("INSERT INTO CultivoContienePlantas (idCultivo , idPlanta, cantidad, fecha) VALUES("+nCultivo+","
-                +planta.getIdPlanta()+","+cantidad+","+fechaActual.toString()+")");
+        bd.execSQL("INSERT INTO CultivoContienePlantas (idCultivo , idPlanta, cantidad, fecha, nombre) VALUES("+nCultivo+","
+                +planta.getIdPlanta()+","+cantidad+",'"+fechaActual.toString()+"','"+prueba.toString()+"')");
 
         //Mensaje para el usuario
         Toast.makeText(AgregarACultivoActivity.this, "Planta asignada exitosamente", Toast.LENGTH_SHORT).show();
 
         //se redirecciona a la pantalla principal
-       // Intent i = new Intent(this, ListaDePlantasActivity.class);
+        Intent i = new Intent(AgregarACultivoActivity.this, DetalleCultivo.class);
 
+        //i.putExtra("planta", planta);
+        i.putExtra("idCultivo", aEnviar+"");
         //cierra todas las actividades (asi al volver atras no vuelve a una pantalla que no deberia ver)
         //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         //preparacion para iniciar la nueva activity
         //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        //this.startActivity(i);
+        this.startActivity(i);
 
     }
 

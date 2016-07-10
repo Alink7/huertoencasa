@@ -28,16 +28,7 @@ public class DetallePlantaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_planta);
 
-        texto = (TextView)findViewById(R.id.texto);
-        String id = getIntent().getStringExtra("idPlanta");
-        texto.setText(id);
-
         //CAMPOS VISTA
-
-        TextView tid = (TextView)findViewById(R.id.detId);
-        TextView tnom = (TextView)findViewById(R.id.detNombre);
-        TextView tnomC = (TextView)findViewById(R.id.detNomCient);
-        TextView tclase = (TextView)findViewById(R.id.detClase);
 
         TextView tDatosPlanta = (TextView)findViewById(R.id.tDatosPlanta);
 
@@ -45,27 +36,24 @@ public class DetallePlantaActivity extends AppCompatActivity {
         planta = (Planta)b.get("planta");
 
 
-        tid.setText(planta.getNombre());
-        tnom.setText(planta.getNombreCientifico());
-        tnomC.setText(planta.getClase());
-        tclase.setText(planta.getProfundidadNecesaria()+"");
-
-
-        String datosPlantaAux = "Nombre: "+planta.getNombre()+"\n"+
+        String datosPlantaAux =
+                "DATOS GENERALES:"+"\n\n"+
                 "Nombre: "+planta.getNombre()+"\n"+
                 "Nombre Científico: "+planta.getNombreCientifico()+"\n"+
                 "Clase: "+planta.getClase()+"\n"+
+                "\n\nDATOS DE PLANTACIÓN"+"\n\n"+
                 "¿Cuándo Plantar?: "+planta.getCuandoPlantar()+"\n"+
                 "¿Cuándo Cosechar?: "+planta.getDiasCosecha()+"\n"+
-                "Distancia entre líneas de plantación en el huerto.: "+planta.getDistanciaPlantas()+"\n"+
-                "Distancia entre una planta y otra en el huerto:: "+planta.getDistanciaOtrasPlantas()+"\n"+
-                "Profundidad necesaria para plantar: "+planta.getProfundidadNecesaria()+"\n"+
-                "Volumen necesario para planta: "+planta.getVolumenNecesario()+"\n"+
-                "Necesidades de abono: "+planta.getnAbono()+"\n"+
-                "Necesidades de riego: "+planta.getnRiego()+"\n"+
-                "Necesidades de sol: "+planta.getnSol()+"\n"+
-                "Necesidades de tipo de suelo: "+planta.getTipoSuelo()+"\n"+
-                "Necesidades de Temperatura: "+planta.getnTemperatura();
+                "Distancia entre líneas de plantación en el huerto: "+planta.getDistanciaPlantas()+" [cm]\n"+
+                "Distancia entre una planta y otra en el huerto: "+planta.getDistanciaOtrasPlantas()+" [cm]\n"+
+                "Profundidad necesaria para plantar: "+planta.getProfundidadNecesaria()+" [cm]\n"+
+                "Volumen necesario para planta: "+planta.getVolumenNecesario()+" [l]\n"+
+                        "\n\nNECESIDADES DE LA PLANTA:"+"\n"+
+                "\nNecesidades de abono: "+planta.getnAbono()+"\n"+
+                "\nNecesidades de riego: "+planta.getnRiego()+"\n"+
+                "\nNecesidades de sol: "+planta.getnSol()+"\n"+
+                "\nNecesidades de tipo de suelo: "+planta.getTipoSuelo()+"\n"+
+                "\nNecesidades de Temperatura: "+planta.getnTemperatura();
 
         tDatosPlanta.setText(datosPlantaAux);
 
