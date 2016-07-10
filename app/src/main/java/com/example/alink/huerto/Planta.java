@@ -11,6 +11,8 @@ public class Planta implements Parcelable {
     String nombre;
     String nombreCientifico;
     String clase;
+    String cuandoPlantar;
+    String diasCosecha;
     double distanciaPlantas;
     double distanciaOtrasPlantas;
     double profundidadNecesaria;
@@ -49,6 +51,8 @@ public class Planta implements Parcelable {
         nombre = in.readString();
         nombreCientifico = in.readString();
         clase = in.readString();
+        cuandoPlantar = in.readString();
+        diasCosecha = in.readString();
         distanciaPlantas = in.readDouble();
         distanciaOtrasPlantas = in.readDouble();
         profundidadNecesaria = in.readDouble();
@@ -103,6 +107,22 @@ public class Planta implements Parcelable {
 
     public void setClase(String clase) {
         this.clase = clase;
+    }
+
+    public String getCuandoPlantar() {
+        return cuandoPlantar;
+    }
+
+    public void setCuandoPlantar(String cuandoPlantar) {
+        this.cuandoPlantar = cuandoPlantar;
+    }
+
+    public String getDiasCosecha() {
+        return diasCosecha;
+    }
+
+    public void setDiasCosecha(String diasCosecha) {
+        this.diasCosecha = diasCosecha;
     }
 
     public double getDistanciaPlantas() {
@@ -188,6 +208,8 @@ public class Planta implements Parcelable {
         dest.writeString(this.nombre);
         dest.writeString(this.nombreCientifico);
         dest.writeString(this.clase);
+        dest.writeString(this.cuandoPlantar);
+        dest.writeString(this.diasCosecha);
         dest.writeDouble(this.distanciaPlantas);
         dest.writeDouble(this.distanciaOtrasPlantas);
         dest.writeDouble(this.profundidadNecesaria);

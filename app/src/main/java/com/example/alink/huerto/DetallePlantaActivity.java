@@ -39,6 +39,7 @@ public class DetallePlantaActivity extends AppCompatActivity {
         TextView tnomC = (TextView)findViewById(R.id.detNomCient);
         TextView tclase = (TextView)findViewById(R.id.detClase);
 
+        TextView tDatosPlanta = (TextView)findViewById(R.id.tDatosPlanta);
 
         Bundle b = getIntent().getExtras();
         planta = (Planta)b.get("planta");
@@ -47,14 +48,26 @@ public class DetallePlantaActivity extends AppCompatActivity {
         tid.setText(planta.getNombre());
         tnom.setText(planta.getNombreCientifico());
         tnomC.setText(planta.getClase());
+        tclase.setText(planta.getProfundidadNecesaria()+"");
 
-        if(planta != null){
-            System.out.println(planta.getNombre());
-            System.out.println(planta.getNombreCientifico());
-            System.out.println(planta.getDistanciaOtrasPlantas());
-            System.out.println(planta.getDistanciaPlantas());
-            System.out.println(planta.getClase());
-        }
+
+        String datosPlantaAux = "Nombre: "+planta.getNombre()+"\n"+
+                "Nombre: "+planta.getNombre()+"\n"+
+                "Nombre Científico: "+planta.getNombreCientifico()+"\n"+
+                "Clase: "+planta.getClase()+"\n"+
+                "¿Cuándo Plantar?: "+planta.getCuandoPlantar()+"\n"+
+                "¿Cuándo Cosechar?: "+planta.getDiasCosecha()+"\n"+
+                "Distancia entre líneas de plantación en el huerto.: "+planta.getDistanciaPlantas()+"\n"+
+                "Distancia entre una planta y otra en el huerto:: "+planta.getDistanciaOtrasPlantas()+"\n"+
+                "Profundidad necesaria para plantar: "+planta.getProfundidadNecesaria()+"\n"+
+                "Volumen necesario para planta: "+planta.getVolumenNecesario()+"\n"+
+                "Necesidades de abono: "+planta.getnAbono()+"\n"+
+                "Necesidades de riego: "+planta.getnRiego()+"\n"+
+                "Necesidades de sol: "+planta.getnSol()+"\n"+
+                "Necesidades de tipo de suelo: "+planta.getTipoSuelo()+"\n"+
+                "Necesidades de Temperatura: "+planta.getnTemperatura();
+
+        tDatosPlanta.setText(datosPlantaAux);
 
 
         Button agregarACultivo = (Button)findViewById(R.id.botonAgregar);

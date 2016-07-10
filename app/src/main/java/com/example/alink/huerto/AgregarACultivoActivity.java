@@ -13,11 +13,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import bd.BdSqliteHelper;
@@ -29,32 +34,38 @@ public class AgregarACultivoActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private Spinner ncultivo;
     Planta planta;
+    private EditText inputCantidad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_acultivo);
 
+        TextView tNombrePlanta = (TextView)findViewById(R.id.tNombrePlanta);
         Bundle b = getIntent().getExtras();
         planta = (Planta)b.get("planta");
         TextView tAgregarCultivo = (TextView)findViewById(R.id.tAgregarCultivo);
 
-        // Inicializar
+        inputCantidad = (EditText)findViewById(R.id.inputCantidad);
+
+        //NOMBRE DE PLANTA
+        tNombrePlanta.setText(planta.getNombre());
         cultivos = new ArrayList<>();
-        traerCultivos();
+        traerCultivos();//DESDE LA BASE DE DATOS LOCAL
         if(cultivos.size()==0){
             tAgregarCultivo.setText("No has creado ningún cultivo");
         }else {
+            //SPINNER
             ArrayList<String> nombreArray = new ArrayList<String>();
-
+            int aux=1;
             for(int i = 0; i< cultivos.size(); i++){
-                nombreArray.add("Cultivo "+(i+1));
+                nombreArray.add("Cultivo "+(aux));
+                aux++;
             }
             ArrayAdapter adapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_spinner_dropdown_item, nombreArray);
 
             ncultivo = (Spinner) findViewById(R.id.cultivo_tipo_suelo);
-
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             ncultivo.setAdapter(adapter);
 
@@ -63,35 +74,17 @@ public class AgregarACultivoActivity extends AppCompatActivity {
             botonAsignacion.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    asignarACultivo(v);
+
+                    if(planta.getProfundidadNecesaria() <= cultivos.get(ncultivo.getSelectedItemPosition()).getProfundidad()) {
+                        asignarACultivo(v);
+                    }else{
+                        Toast.makeText(AgregarACultivoActivity.this, "Planta no asignada," +
+                                "el cultivo seleccionado no posee la profundidad suficiente", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             });
 
-            //si hay cultivos se muestra la lista     cultivos.get(0).getTipoSuelo()
-
-            /*mAdapter = new RecyclerViewAdapterCultivos(cultivos);
-            mAdapter.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(AgregarACultivoActivity.this, "Ha pulsado el huerto " + mRecyclerView.getChildPosition(v), Toast.LENGTH_SHORT).show();
-
-                    new AlertDialog.Builder(AgregarACultivoActivity.this)
-                            .setTitle( "Confirmación" )
-                            .setMessage( "¿Está seguro que quiere agregarla en el cultivo n°?")
-                            .setPositiveButton( "Sí", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Log.d( "AlertDialog", "Positive" );
-                                }
-                            })
-                            .setNegativeButton( "No", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Log.d( "AlertDialog", "Negative" );
-                                }
-                            } )
-                            .show();
-
-                }
-            });*/
         }//FIN ELSE
 
 
@@ -104,9 +97,15 @@ public class AgregarACultivoActivity extends AppCompatActivity {
         //Float largo = Float.parseFloat(txt_cultivo_largo.getText().toString());
         //Float ancho = Float.parseFloat(txt_cultivo_ancho.getText().toString());
         //Float profundidad = Float.parseFloat(txt_cultivo_profundidad.getText().toString());
-        String nCultivo = ncultivo.getSelectedItem().toString();
+        int nCultivo = ncultivo.getSelectedItemPosition();
+        nCultivo++; //porque el de arriba parte en 0
+        int cantidad = Integer.parseInt(inputCantidad.getText().toString());
+        String fechaActual = obtenerFechaActual();
 
-        bd.execSQL("INSERT INTO CultivoContienePlantas (idCultivo , idPlanta) VALUES("+nCultivo+","+planta.getIdPlanta()+")");
+        Log.d("FECHAAAAAAAAAAAAAAAAAAAAAAAAA",fechaActual);
+
+        bd.execSQL("INSERT INTO CultivoContienePlantas (idCultivo , idPlanta, cantidad, fecha) VALUES("+nCultivo+","
+                +planta.getIdPlanta()+","+cantidad+","+fechaActual.toString()+")");
 
         //Mensaje para el usuario
         Toast.makeText(AgregarACultivoActivity.this, "Planta asignada exitosamente", Toast.LENGTH_SHORT).show();
@@ -134,5 +133,18 @@ public class AgregarACultivoActivity extends AppCompatActivity {
             } while (cursor.moveToNext());
         }
         cursor.close();
+    }
+
+    private String obtenerFechaActual(){
+
+        Calendar cal = new GregorianCalendar();
+
+        Date date = cal.getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+        String formatteDate = df.format(date);
+
+        return formatteDate;
     }
 }

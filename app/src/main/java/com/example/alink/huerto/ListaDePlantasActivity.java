@@ -84,6 +84,10 @@ public class ListaDePlantasActivity extends AppCompatActivity {
                             plantita.setNombre(planta.getString("nombre"));
                             plantita.setNombreCientifico(planta.getString("nomCientifico"));
                             plantita.setClase(planta.getString("clase"));
+
+                            plantita.setCuandoPlantar(planta.getString("cuandoPlantar"));
+                            plantita.setDiasCosecha(planta.getString("diasCosecha"));
+
                             plantita.setDistanciaPlantas(planta.getDouble("distanciaPlantas[cm]"));
                             plantita.setDistanciaOtrasPlantas(planta.getDouble("distanciaOtrasPlantas[cm]"));
                             plantita.setProfundidadNecesaria(planta.getDouble("profundidadNecesaria[cm]"));
