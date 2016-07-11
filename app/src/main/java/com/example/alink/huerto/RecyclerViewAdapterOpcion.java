@@ -75,9 +75,9 @@ public class RecyclerViewAdapterOpcion extends RecyclerView.Adapter<RecyclerView
         holder.opcionTitulo.setText(items.get(position).getNombre());
         holder.opcionDescripcion.setText(items.get(position).getDescripcion());
         if(position == 0)
-            holder.fondoImagen.setBackgroundResource(R.mipmap.huertos2);
+            holder.fondoImagen.setBackgroundResource(R.mipmap.ic_launcher);
         else
-            holder.fondoImagen.setBackgroundResource(R.mipmap.recetas);
+            holder.fondoImagen.setBackgroundResource(R.mipmap.ic_launcher);
         holder.position = position;
     }
 

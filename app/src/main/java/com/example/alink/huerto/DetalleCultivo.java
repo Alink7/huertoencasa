@@ -39,7 +39,9 @@ public class DetalleCultivo extends AppCompatActivity {
 
         plantasEnCultivo = new ArrayList<PlantaAux>();
         traerPlantasDeCultivo();//DESDE LA BASE DE DATOS LOCAL
-
+        if(plantasEnCultivo.size() == 0){
+            Toast.makeText(getApplicationContext(), "No tienes plantas en este cultivo", Toast.LENGTH_SHORT).show();
+        }
         ListAdapter adapter=new ListAdapter(this,plantasEnCultivo);
         listaEnCultivo=(ListView)findViewById(R.id.listaEnCultivo);
         listaEnCultivo.setAdapter(adapter);
@@ -48,7 +50,7 @@ public class DetalleCultivo extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String Slecteditem= plantasEnCultivo.get(position).toString();
-                Toast.makeText(getApplicationContext(), Slecteditem, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), Slecteditem, Toast.LENGTH_SHORT).show();
             }
         });
     }//FIN ONCREATE

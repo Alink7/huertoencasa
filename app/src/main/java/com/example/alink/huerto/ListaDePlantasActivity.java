@@ -98,6 +98,8 @@ public class ListaDePlantasActivity extends AppCompatActivity {
                             plantita.setTipoSuelo(planta.getString("tipoSuelo"));
                             plantita.setnTemperatura(planta.getString("nTemperatura"));
 
+                            plantita.setUrlimagen(planta.getString("urlimagen"));
+
                             items.add(plantita);
                         }
                         //Crear nuevo adaptador

@@ -22,6 +22,7 @@ public class Planta implements Parcelable {
     String nSol;
     String tipoSuelo;
     String nTemperatura;
+    String urlimagen;
 
     /*public Planta(String idPlanta, String nombreCientifico, String nombre, String clase,
                   double distanciaPlantas, double distanciaOtrasPlantas, double profundidadNecesaria,
@@ -62,6 +63,7 @@ public class Planta implements Parcelable {
         nSol = in.readString();
         tipoSuelo = in.readString();
         nTemperatura = in.readString();
+        urlimagen = in.readString();
     }
 
     public static final Parcelable.Creator<Planta> CREATOR = new Parcelable.Creator<Planta>() {
@@ -197,6 +199,14 @@ public class Planta implements Parcelable {
         this.nTemperatura = nTemperatura;
     }
 
+    public String getUrlimagen() {
+        return urlimagen;
+    }
+
+    public void setUrlimagen(String urlimagen) {
+        this.urlimagen = urlimagen;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -219,5 +229,6 @@ public class Planta implements Parcelable {
         dest.writeString(this.nSol);
         dest.writeString(this.tipoSuelo);
         dest.writeString(this.nTemperatura);
+        dest.writeString(this.urlimagen);
     }
 }

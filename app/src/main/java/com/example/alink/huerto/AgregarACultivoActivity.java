@@ -16,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,13 +49,17 @@ public class AgregarACultivoActivity extends AppCompatActivity {
         TextView tAgregarCultivo = (TextView)findViewById(R.id.tAgregarCultivo);
 
         inputCantidad = (EditText)findViewById(R.id.inputCantidad);
+        Button botonAsignacion = (Button)findViewById(R.id.botonAsignacion);
 
         //NOMBRE DE PLANTA
         tNombrePlanta.setText(planta.getNombre());
         cultivos = new ArrayList<>();
         traerCultivos();//DESDE LA BASE DE DATOS LOCAL
         if(cultivos.size()==0){
-            tAgregarCultivo.setText("No has creado ningún cultivo");
+            Intent intent = new Intent(AgregarACultivoActivity.this, PrincipalActivity.class);
+            Toast.makeText(AgregarACultivoActivity.this, "Debes agregar un cultivo primero", Toast.LENGTH_SHORT).show();
+            startActivity(intent);
+
         }else {
             //SPINNER
             ArrayList<String> nombreArray = new ArrayList<String>();
@@ -69,17 +75,22 @@ public class AgregarACultivoActivity extends AppCompatActivity {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             ncultivo.setAdapter(adapter);
 
-            Button botonAsignacion = (Button)findViewById(R.id.botonAsignacion);
+
 
             botonAsignacion.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if(planta.getProfundidadNecesaria() <= cultivos.get(ncultivo.getSelectedItemPosition()).getProfundidad()) {
-                        asignarACultivo(v);
-                    }else{
+                    if((planta.getDistanciaPlantas()* Integer.parseInt(inputCantidad.getText().toString())) > cultivos.get(ncultivo.getSelectedItemPosition()).getLargo()){
+                        Toast.makeText(AgregarACultivoActivity.this, "Planta no asignada," +
+                                "el cultivo seleccionado no posee el largo suficiente", Toast.LENGTH_SHORT).show();
+                    }else if((planta.getDistanciaOtrasPlantas()*Integer.parseInt(inputCantidad.getText().toString())) > cultivos.get(ncultivo.getSelectedItemPosition()).getAncho()){
+                        Toast.makeText(AgregarACultivoActivity.this, "Planta no asignada," +
+                                "el cultivo seleccionado no posee el ancho suficiente", Toast.LENGTH_SHORT).show();
+                    }else if((planta.getProfundidadNecesaria()*Integer.parseInt(inputCantidad.getText().toString())) > cultivos.get(ncultivo.getSelectedItemPosition()).getProfundidad()){
                         Toast.makeText(AgregarACultivoActivity.this, "Planta no asignada," +
                                 "el cultivo seleccionado no posee la profundidad suficiente", Toast.LENGTH_SHORT).show();
+                    }else{
+                        asignarACultivo(v);
                     }
 
                 }

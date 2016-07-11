@@ -2,7 +2,10 @@ package com.example.alink.huerto;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -86,13 +90,6 @@ public class ReciclerViewAdapter extends RecyclerView.Adapter<ReciclerViewAdapte
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.planta_card, parent, false);
 
-            /*PlantaViewHolder vh = new PlantaViewHolder(v,
-                    new PlantaViewHolder.IMyViewHolderClicks() {
-                public void onPotato(View caller) { Log.d("VEGETABLES", "Poh-tah-tos"); };
-                public void onTomato(ImageView callerImage) { Log.d("VEGETABLES", "To-m8-tohs"); }
-            });*/
-
-
             PlantaViewHolder vh = new PlantaViewHolder(v);
             return vh;
         }
@@ -105,11 +102,42 @@ public class ReciclerViewAdapter extends RecyclerView.Adapter<ReciclerViewAdapte
             holder.nombre.setText(items.get(position).getNombre());
             holder.nombreCientifico.setText(items.get(position).getNombreCientifico());
             String aux =items.get(position).getNombre();
-            holder.imgViewIcon.setImageResource(R.drawable.ajo);
+
+            new DownloadImageTask(holder.imgViewIcon).execute(items.get(position).getUrlimagen());
+
+            //holder.imgViewIcon.setImageResource(R.drawable.ajo);
+
             holder.position = position;
             holder.idPlanta = items.get(position).getIdPlanta();
 
         }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setAdjustViewBounds(true);
+            bmImage.setScaleType(ImageView.ScaleType.FIT_XY );
+            bmImage.setImageBitmap(result);
+        }
+    }
 
 
 
