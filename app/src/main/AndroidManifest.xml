@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <!-- COMENTARIO DE PRUEBA -->
     <!-- COMENTARIO DE PRUEBA2 -->
@@ -17,10 +19,20 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver android:name="receivers.AlarmReceiver"></receiver>
+        <receiver android:name="receivers.RebootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
+        <activity android:name=".MyIntro"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".PrincipalActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +42,8 @@
         <activity android:name=".WelcomeActivity" />
         <activity
             android:name=".LoginActivity"
-            android:parentActivityName=".PrincipalActivity">
+            android:parentActivityName=".PrincipalActivity"
+            android:noHistory="true">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -40,6 +53,7 @@
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register"
+            android:noHistory="true"
             android:parentActivityName=".LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -48,7 +62,8 @@
         <activity
             android:name=".CrearCultivoActivity"
             android:label="Nuevo cultivo"
-            android:parentActivityName=".PrincipalActivity">
+            android:parentActivityName=".PrincipalActivity"
+            android:noHistory="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.alink.huerto.PrincipalActivity" />
@@ -88,17 +103,34 @@
         <activity android:name=".PerfilActivity" />
         <activity android:name=".ListaDePlantasActivity" />
         <activity android:name=".DetallePlantaActivity" />
-        <activity android:name=".AgregarACultivoActivity" />
+        <activity android:name=".AgregarACultivoActivity"
+            android:noHistory="true"/>
         <activity android:name=".DetalleCultivo" />
         <activity
             android:name=".OpcionesCultivoActivity"
             android:label="Opciones de tu huerta"
+            android:parentActivityName=".PrincipalActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.alink.huerto.PrincipalActivity" />
+        </activity>
+        <activity
+            android:name=".ListaRecetasActivity"
+            android:label="Recetas"
+            android:parentActivityName=".OpcionesCultivoActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.alink.huerto.OpcionesCultivoActivity" />
+        </activity>
+        <activity android:name=".DetalleReceta" />
+        <activity
+            android:name=".ListaTareasActivity"
+            android:label="Lista de Tareas"
             android:parentActivityName=".PrincipalActivity"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.alink.huerto.PrincipalActivity"
-                />
+                android:value="com.example.alink.huerto.OpcionesCultivoActivity" />
         </activity>
     </application>
 

@@ -36,8 +36,6 @@ public class OpcionesCultivoActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         cultivo = (Cultivo)b.get("cultivo");
 
-        System.out.println("CULTIVO ID " + cultivo.getTipoSuelo());
-
         if(cultivo != null) {
             items = new ArrayList<>();
             items.add(new OpcionCultivo("Plantas", "Revisa las plantas que están actualmente en tu cultivo"));

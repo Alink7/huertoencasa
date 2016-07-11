@@ -1,5 +1,7 @@
 package com.example.alink.huerto;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,6 +24,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import bd.BdSqliteHelper;
+import receivers.AlarmReceiver;
 
 public class AgregarACultivoActivity extends AppCompatActivity {
     private List<Cultivo> cultivos;
@@ -105,6 +108,12 @@ public class AgregarACultivoActivity extends AppCompatActivity {
         bd.execSQL("INSERT INTO CultivoContienePlantas (idCultivo , idPlanta, cantidad, fecha, nombre) VALUES("+nCultivo+","
                 +planta.getIdPlanta()+","+cantidad+",'"+fechaActual.toString()+"','"+prueba.toString()+"')");
 
+        //NUEVA TAREA
+        bd.execSQL("INSERT INTO Tarea (nombre, estado) VALUES ('Regar "+planta.getNombre()+"', 0)");
+
+        //CREAR NOTIFICACION NUEVA TAREA
+        crearNotificacion(planta);
+
         //Mensaje para el usuario
         Toast.makeText(AgregarACultivoActivity.this, "Planta asignada exitosamente", Toast.LENGTH_SHORT).show();
 
@@ -121,6 +130,25 @@ public class AgregarACultivoActivity extends AppCompatActivity {
 
         this.startActivity(i);
 
+    }
+
+    private void crearNotificacion(Planta planta){
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, Calendar.MINUTE);
+        long timeInterval = c.getTimeInMillis();
+
+        System.out.println("TIEMPO CADA MINUTO: " + timeInterval);
+        System.out.println("TIEMPO CADA MINUTO2: " + AlarmManager.INTERVAL_FIFTEEN_MINUTES/15);
+        System.out.println("TIEMPO CADA HORA: " + AlarmManager.INTERVAL_HOUR);
+        System.out.println("TIEMPO CADA DIA: " + AlarmManager.INTERVAL_DAY);
+
+        Intent intent = new Intent(AgregarACultivoActivity.this, AlarmReceiver.class);
+        intent.putExtra("planta", planta);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(AgregarACultivoActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) AgregarACultivoActivity.this.getSystemService(AgregarACultivoActivity.ALARM_SERVICE);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (AlarmManager.INTERVAL_FIFTEEN_MINUTES/15), AlarmManager.INTERVAL_FIFTEEN_MINUTES/15, pendingIntent);
+
+        Toast.makeText(AgregarACultivoActivity.this, "Notificación programada", Toast.LENGTH_SHORT).show();
     }
 
     private void traerCultivos(){

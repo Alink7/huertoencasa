@@ -25,10 +25,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import bd.BdSqliteHelper;
+import cz.msebera.android.httpclient.Header;
 
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,16 +50,26 @@ public class PrincipalActivity extends AppCompatActivity
     private RecyclerViewAdapterCultivos mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static SessionManager sManager;
+    private HashMap<String, String> datosUsuario;
+    private int tutorialActivo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        traerTutorial();
+        if (tutorialActivo == 0){
+            Intent i = new Intent(this, MyIntro.class);
+            startActivity(i);
+        }
+
         setContentView(R.layout.activity_principal);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         sManager = new SessionManager(getApplicationContext());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(fab.GONE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,6 +96,8 @@ public class PrincipalActivity extends AppCompatActivity
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        datosUsuario = sManager.detallesUsuario();
 
         // Inicializar
         cultivos = new ArrayList<>();
@@ -118,6 +139,19 @@ public class PrincipalActivity extends AppCompatActivity
         }
         cursor.close();
     }
+
+    private void traerTutorial(){
+        BdSqliteHelper bdplantas = new BdSqliteHelper(this, "DBPLANTAS", null, 1);
+        SQLiteDatabase bd = bdplantas.getReadableDatabase();
+        Cursor cursor = bd.rawQuery("SELECT * FROM Tutorial", null);
+        if (cursor.moveToFirst()) {
+            do {
+                tutorialActivo = cursor.getInt(0);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+    }
+
     
     public void agregarCultivo(View view){
         Intent intent = new Intent(this, CrearCultivoActivity.class);
@@ -182,16 +216,80 @@ public class PrincipalActivity extends AppCompatActivity
             Intent intent = new Intent(this, CrearCultivoActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_tareas) {
-
+            Intent intent = new Intent(this, ListaTareasActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_respaldar) {
+
+            if(sManager.estaLogueado()){
+                tareaRespaldar();
+            }else{
+                Toast.makeText(PrincipalActivity.this, "No hay una sesión activa, por favor inicie sesión", Toast.LENGTH_SHORT).show();
+            }
 
         }else if (id == R.id.nav_restaurar){
 
+            if(sManager.estaLogueado()){
+                tareaRestaurar();
+            }else{
+                Toast.makeText(PrincipalActivity.this, "No hay una sesión activa, por favor inicie sesión", Toast.LENGTH_SHORT).show();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /*public void registerUser(){
+
+        RequestParams params = new RequestParams();
+        params.put("username", this.username);
+        params.put("email", this.email);
+        params.put("password", this.password);
+
+        dialog.show();
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post("http://colvin.chillan.ubiobio.cl:8070/nionate/webservice/?c=User&a=registerUser", params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                if(statusCode == 200){
+                    dialog.dismiss();
+                    try {
+                        System.out.println(response.get("response"));
+                        Toast.makeText(context, "Registrado correctamente", Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }*/
+
+
+    public void tareaRespaldar(){
+
+        RequestParams params = new RequestParams();
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post("http://colvin.chillan.ubiobio.cl:8070/nionate/webservice/?c=User&a=registerUser", params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                if(statusCode == 200){
+                    try {
+                        System.out.println(response.get("response"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }
+
+    public void tareaRestaurar(){
+
     }
 
     public static class CerrarSesionDialog extends DialogFragment {

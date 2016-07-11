@@ -35,6 +35,10 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_below = "@id/tDatosPlanta"
+        android:background="@drawable/roundedbutton"
+        android:textColor="@color/cardview_light_background"
+        android:textStyle="bold"
+        android:padding="15dp"
         android:layout_marginBottom="64dp" />
 
 </RelativeLayout>

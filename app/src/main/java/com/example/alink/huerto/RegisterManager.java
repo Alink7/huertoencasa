@@ -2,6 +2,7 @@ package com.example.alink.huerto;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -52,6 +53,14 @@ public class RegisterManager {
                     try {
                         System.out.println(response.get("response"));
                         Toast.makeText(context, "Registrado correctamente", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(context, PrincipalActivity.class);
+                        //cierra todas las actividades (asi al volver atras no vuelve a una pantalla que no deberia ver)
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                        //preparacion para iniciar la nueva activity
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        context.startActivity(i);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

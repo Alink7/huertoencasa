@@ -1,10 +1,13 @@
 package com.example.alink.huerto;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -19,12 +22,14 @@ public class RecyclerViewAdapterOpcion extends RecyclerView.Adapter<RecyclerView
 
     public static class OpcionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView opcionTitulo, opcionDescripcion;
+        public RelativeLayout fondoImagen;
         public int position;
 
         public OpcionViewHolder(View v) {
             super(v);
             opcionTitulo = (TextView) v.findViewById(R.id.opcion_cultivo_titulo);
             opcionDescripcion = (TextView) v.findViewById(R.id.opcion_cultivo_detalle);
+            fondoImagen = (RelativeLayout) v.findViewById(R.id.imagen_fondo);
 
             v.setOnClickListener(this);
         }
@@ -40,7 +45,7 @@ public class RecyclerViewAdapterOpcion extends RecyclerView.Adapter<RecyclerView
                     i.putExtra("idCultivo", String.valueOf(cultivo.getIdCultivo()));
                     break;
                 case "Recetas":
-                    i = new Intent(v.getContext(), null);
+                    i = new Intent(v.getContext(), ListaRecetasActivity.class);
                     i.putExtra("opcion", opcionCultivo);
                     i.putExtra("cultivo", cultivo);
                     break;
@@ -63,11 +68,16 @@ public class RecyclerViewAdapterOpcion extends RecyclerView.Adapter<RecyclerView
         OpcionViewHolder vh = new OpcionViewHolder(v);
         return vh;
     }
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(OpcionViewHolder holder, int position) {
 
         holder.opcionTitulo.setText(items.get(position).getNombre());
         holder.opcionDescripcion.setText(items.get(position).getDescripcion());
+        if(position == 0)
+            holder.fondoImagen.setBackgroundResource(R.mipmap.huertos2);
+        else
+            holder.fondoImagen.setBackgroundResource(R.mipmap.recetas);
         holder.position = position;
     }
 
